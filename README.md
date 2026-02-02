@@ -2,6 +2,14 @@
 
 Obsidian에서 수입과 지출을 간편하게 관리할 수 있는 가계부 플러그인입니다.
 
+<img width="1793" height="578" alt="Image" src="https://github.com/user-attachments/assets/703fcef6-0d3c-42de-a63a-d3069590f371" />
+
+<img width="1780" height="782" alt="Image" src="https://github.com/user-attachments/assets/d56a4fa6-cc97-4897-ac1c-ee19803c5183" />
+
+<img width="1787" height="667" alt="Image" src="https://github.com/user-attachments/assets/1260b274-c83f-47a4-a8af-0f313a266ffb" />
+
+<img width="1777" height="726" alt="Image" src="https://github.com/user-attachments/assets/2c6c8cba-6fb7-4c50-b7b1-8ea84b77d87b" />
+
 ## 주요 기능
 
 - **거래 등록**: 수입/지출을 날짜, 카테고리, 금액, 설명과 함께 기록
