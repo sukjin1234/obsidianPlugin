@@ -33,6 +33,10 @@ export default function App({ dataManager }: AppProps) {
 		await dataManager.deleteTransaction(id);
 	};
 
+	const updateTransaction = async (id: string, updates: Partial<Transaction>) => {
+		await dataManager.updateTransaction(id, updates);
+	};
+
 	// 총계 계산
 	const totalIncome = transactions
 		.filter(t => t.type === 'income')
@@ -107,6 +111,7 @@ export default function App({ dataManager }: AppProps) {
 					<ExpenseTable
 						transactions={transactions}
 						onDelete={deleteTransaction}
+						onUpdate={updateTransaction}
 					/>
 				)}
 				{activeTab === 'chart' && (

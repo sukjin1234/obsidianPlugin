@@ -434,7 +434,10 @@
 	text-align: center;
 }
 
-.btn-delete {
+.btn-delete,
+.btn-edit,
+.btn-save,
+.btn-cancel {
 	padding: 4px;
 	background: none;
 	border: none;
@@ -445,10 +448,47 @@
 	align-items: center;
 	justify-content: center;
 	transition: color 0.2s;
+	margin: 0 2px;
 }
 
 .btn-delete:hover {
 	color: var(--color-red);
+}
+
+.btn-edit:hover {
+	color: var(--text-accent);
+}
+
+.btn-save:hover {
+	color: var(--color-green);
+}
+
+.btn-cancel:hover {
+	color: var(--color-red);
+}
+
+/* 인라인 수정 입력 */
+.edit-input,
+.edit-select {
+	padding: 4px 8px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	background-color: var(--background-primary);
+	color: var(--text-normal);
+	font-size: 12px;
+	width: 100%;
+	min-width: 60px;
+	box-sizing: border-box;
+}
+
+.edit-input:focus,
+.edit-select:focus {
+	outline: none;
+	border-color: var(--interactive-accent);
+}
+
+.edit-amount {
+	text-align: right;
 }
 
 .empty-message {
