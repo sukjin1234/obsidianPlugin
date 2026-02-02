@@ -1,4 +1,4 @@
-import { App, TFile } from 'obsidian';
+import { App } from 'obsidian';
 import { ExpenseData, Transaction, DEFAULT_DATA } from './types';
 
 const DATA_FILE_PATH = 'expenses.json';
@@ -10,37 +10,46 @@ export class DataManager {
 
 	constructor(app: App) {
 		this.app = app;
-		this.data = { ...DEFAULT_DATA };
+		this.data = JSON.parse(JSON.stringify(DEFAULT_DATA));
 	}
 
 	async loadData(): Promise<void> {
 		try {
-			const file = this.app.vault.getAbstractFileByPath(DATA_FILE_PATH);
-			if (file instanceof TFile) {
-				const content = await this.app.vault.read(file);
-				this.data = JSON.parse(content);
+			const adapter = this.app.vault.adapter;
+			const exists = await adapter.exists(DATA_FILE_PATH);
+			
+			if (exists) {
+				const content = await adapter.read(DATA_FILE_PATH);
+				const loadedData = JSON.parse(content);
+				
+				// 기존 데이터와 병합
+				this.data = {
+					transactions: loadedData.transactions || [],
+					settings: {
+						...DEFAULT_DATA.settings,
+						...loadedData.settings,
+					},
+				};
+				console.log('가계부 데이터 로드 완료:', this.data.transactions.length, '건');
 			} else {
-				// 파일이 없으면 기본 데이터로 생성
+				console.log('가계부 데이터 파일 없음, 새로 생성');
 				await this.saveData();
 			}
 		} catch (error) {
-			console.error('Failed to load expense data:', error);
-			this.data = { ...DEFAULT_DATA };
+			console.error('가계부 데이터 로드 실패:', error);
+			this.data = JSON.parse(JSON.stringify(DEFAULT_DATA));
 		}
 	}
 
 	async saveData(): Promise<void> {
 		try {
+			const adapter = this.app.vault.adapter;
 			const content = JSON.stringify(this.data, null, 2);
-			const file = this.app.vault.getAbstractFileByPath(DATA_FILE_PATH);
 			
-			if (file instanceof TFile) {
-				await this.app.vault.modify(file, content);
-			} else {
-				await this.app.vault.create(DATA_FILE_PATH, content);
-			}
+			await adapter.write(DATA_FILE_PATH, content);
+			console.log('가계부 데이터 저장 완료');
 		} catch (error) {
-			console.error('Failed to save expense data:', error);
+			console.error('가계부 데이터 저장 실패:', error);
 		}
 	}
 
@@ -76,7 +85,6 @@ export class DataManager {
 		this.notifyListeners();
 	}
 
-	// React 상태 동기화를 위한 리스너 패턴
 	subscribe(listener: () => void): () => void {
 		this.listeners.add(listener);
 		return () => {
