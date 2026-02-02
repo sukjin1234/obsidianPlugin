@@ -37,37 +37,36 @@ export function ExpenseTable({ transactions, onDelete }: ExpenseTableProps) {
 		<div className="expense-table-container">
 			{/* 필터 섹션 */}
 			<div className="filter-section">
-				<span className="filter-label">필터:</span>
-
-				<select
-					value={filterType}
-					onChange={(e) => setFilterType(e.target.value as 'all' | 'expense' | 'income')}
-					className="form-select filter-select"
-				>
-					<option value="all">전체</option>
-					<option value="expense">지출</option>
-					<option value="income">수입</option>
-				</select>
-
-				<select
-					value={filterCategory}
-					onChange={(e) => setFilterCategory(e.target.value)}
-					className="form-select filter-select"
-				>
-					<option value="all">모든 카테고리</option>
-					{allCategories.map((category) => (
-						<option key={category} value={category}>
-							{category}
-						</option>
-					))}
-				</select>
-
+				<div className="filter-row">
+					<span className="filter-label">필터:</span>
+					<select
+						value={filterType}
+						onChange={(e) => setFilterType(e.target.value as 'all' | 'expense' | 'income')}
+						className="filter-select"
+					>
+						<option value="all">전체</option>
+						<option value="expense">지출</option>
+						<option value="income">수입</option>
+					</select>
+					<select
+						value={filterCategory}
+						onChange={(e) => setFilterCategory(e.target.value)}
+						className="filter-select"
+					>
+						<option value="all">모든 카테고리</option>
+						{allCategories.map((category) => (
+							<option key={category} value={category}>
+								{category}
+							</option>
+						))}
+					</select>
+				</div>
 				<input
 					type="text"
 					placeholder="검색..."
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
-					className="form-input search-input"
+					className="search-input"
 				/>
 			</div>
 

@@ -40,7 +40,7 @@ export function ExpenseForm({ onAdd }: ExpenseFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit} className="expense-form">
-			<div className="form-grid">
+			<div className="form-row">
 				<div className="form-group">
 					<label className="form-label">날짜</label>
 					<input
@@ -50,7 +50,6 @@ export function ExpenseForm({ onAdd }: ExpenseFormProps) {
 						className="form-input"
 					/>
 				</div>
-
 				<div className="form-group">
 					<label className="form-label">구분</label>
 					<select
@@ -65,7 +64,9 @@ export function ExpenseForm({ onAdd }: ExpenseFormProps) {
 						<option value="income">수입</option>
 					</select>
 				</div>
+			</div>
 
+			<div className="form-row">
 				<div className="form-group">
 					<label className="form-label">카테고리</label>
 					<select
@@ -81,7 +82,6 @@ export function ExpenseForm({ onAdd }: ExpenseFormProps) {
 						))}
 					</select>
 				</div>
-
 				<div className="form-group">
 					<label className="form-label">금액</label>
 					<input
@@ -92,7 +92,9 @@ export function ExpenseForm({ onAdd }: ExpenseFormProps) {
 						className="form-input"
 					/>
 				</div>
+			</div>
 
+			<div className="form-row">
 				<div className="form-group">
 					<label className="form-label">설명</label>
 					<input
@@ -103,12 +105,12 @@ export function ExpenseForm({ onAdd }: ExpenseFormProps) {
 						className="form-input"
 					/>
 				</div>
-			</div>
-
-			<div className="form-actions">
-				<button type="submit" className="btn-primary">
-					등록하기
-				</button>
+				<div className="form-group form-action-group">
+					<label className="form-label">&nbsp;</label>
+					<button type="submit" className="btn-primary">
+						등록하기
+					</button>
+				</div>
 			</div>
 		</form>
 	);

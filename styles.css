@@ -1,14 +1,10 @@
 /* Obsidian 가계부 플러그인 스타일 */
 
-/* 커스텀 색상 변수 */
+/* 커스텀 색상 변수 - Obsidian 테마 호환 */
 .expense-tracker-container {
-	--color-income: #3b82f6;
-	--color-income-light: #dbeafe;
-	--color-expense: #ef4444;
-	--color-expense-light: #fee2e2;
-	--color-balance: #22c55e;
-	--color-balance-light: #dcfce7;
-	--color-red: #ef4444;
+	--color-income: var(--text-accent);
+	--color-expense: var(--color-red);
+	--color-balance: var(--color-green);
 }
 
 /* 메인 컨테이너 */
@@ -38,7 +34,7 @@
 	margin: 0;
 }
 
-/* 요약 카드 */
+/* 요약 카드 - Obsidian 테마에 맞춤 */
 .expense-summary {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -55,36 +51,15 @@
 .summary-card {
 	padding: 16px;
 	border-radius: 8px;
-}
-
-.summary-card.income {
-	background-color: var(--color-income-light);
-}
-
-.summary-card.expense {
-	background-color: var(--color-expense-light);
-}
-
-.summary-card.balance {
-	background-color: var(--color-balance-light);
+	background-color: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
 }
 
 .summary-label {
 	font-size: 12px;
 	font-weight: 500;
+	color: var(--text-muted);
 	margin-bottom: 4px;
-}
-
-.summary-card.income .summary-label {
-	color: var(--color-income);
-}
-
-.summary-card.expense .summary-label {
-	color: var(--color-expense);
-}
-
-.summary-card.balance .summary-label {
-	color: var(--color-balance);
 }
 
 .summary-value {
@@ -93,15 +68,15 @@
 }
 
 .summary-card.income .summary-value {
-	color: #1d4ed8;
+	color: var(--text-accent);
 }
 
 .summary-card.expense .summary-value {
-	color: #dc2626;
+	color: var(--color-red);
 }
 
 .summary-card.balance .summary-value {
-	color: #16a34a;
+	color: var(--color-green);
 }
 
 /* 섹션 */
@@ -123,9 +98,8 @@
 .expense-tabs {
 	display: flex;
 	gap: 4px;
-	margin-bottom: 16px;
-	border-bottom: 1px solid var(--background-modifier-border);
-	padding-bottom: 8px;
+	margin-bottom: 0;
+	padding-top: 8px;
 }
 
 .tab-button {
@@ -153,12 +127,12 @@
 .expense-form {
 	display: flex;
 	flex-direction: column;
-	gap: 16px;
+	gap: 12px;
 }
 
-.form-grid {
+.form-row {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	grid-template-columns: 1fr 1fr;
 	gap: 12px;
 }
 
@@ -166,6 +140,15 @@
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
+}
+
+.form-action-group {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-action-group .btn-primary {
+	height: 36px;
 }
 
 .form-label {
@@ -191,10 +174,6 @@
 	border-color: var(--interactive-accent);
 }
 
-.form-actions {
-	display: flex;
-	justify-content: flex-end;
-}
 
 .btn-primary {
 	padding: 8px 20px;
@@ -252,29 +231,63 @@
 	gap: 16px;
 }
 
+/* 필터 섹션 */
 .filter-section {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	padding: 12px;
+	background-color: var(--background-primary);
+	border-radius: 6px;
+	border: 1px solid var(--background-modifier-border);
+}
+
+.filter-row {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 8px;
-	padding: 12px;
-	background-color: var(--background-primary);
-	border-radius: 6px;
 }
 
 .filter-label {
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: 500;
 	color: var(--text-muted);
+	margin-right: 4px;
 }
 
 .filter-select {
-	min-width: 100px;
+	padding: 6px 10px;
+	font-size: 13px;
+	background-color: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	color: var(--text-normal);
+	min-width: 80px;
+}
+
+.filter-select:focus {
+	outline: none;
+	border-color: var(--interactive-accent);
 }
 
 .search-input {
-	flex: 1;
-	min-width: 150px;
+	width: 100%;
+	padding: 8px 12px;
+	font-size: 13px;
+	background-color: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 4px;
+	color: var(--text-normal);
+}
+
+.search-input:focus {
+	outline: none;
+	border-color: var(--interactive-accent);
+}
+
+.search-input::placeholder {
+	color: var(--text-faint);
 }
 
 .table-wrapper {
@@ -322,13 +335,13 @@
 }
 
 .badge.expense {
-	background-color: var(--color-expense-light);
-	color: #dc2626;
+	background-color: rgba(var(--color-red-rgb), 0.15);
+	color: var(--color-red);
 }
 
 .badge.income {
-	background-color: var(--color-income-light);
-	color: #1d4ed8;
+	background-color: rgba(var(--color-accent-rgb), 0.15);
+	color: var(--text-accent);
 }
 
 .description-cell {
@@ -341,11 +354,11 @@
 }
 
 .amount-cell.expense {
-	color: var(--color-expense);
+	color: var(--color-red);
 }
 
 .amount-cell.income {
-	color: var(--color-income);
+	color: var(--text-accent);
 }
 
 .action-cell {
@@ -366,7 +379,7 @@
 }
 
 .btn-delete:hover {
-	color: var(--color-expense);
+	color: var(--color-red);
 }
 
 .empty-message {
@@ -419,11 +432,11 @@
 }
 
 .weekday.sunday {
-	color: var(--color-expense);
+	color: var(--color-red);
 }
 
 .weekday.saturday {
-	color: var(--color-income);
+	color: var(--text-accent);
 }
 
 .calendar-grid {
@@ -466,11 +479,11 @@
 }
 
 .day-number.sunday {
-	color: var(--color-expense);
+	color: var(--color-red);
 }
 
 .day-number.saturday {
-	color: var(--color-income);
+	color: var(--text-accent);
 }
 
 .day-transactions {
@@ -489,13 +502,13 @@
 }
 
 .transaction-badge.income {
-	background-color: var(--color-income-light);
-	color: #1d4ed8;
+	background-color: rgba(var(--color-accent-rgb), 0.15);
+	color: var(--text-accent);
 }
 
 .transaction-badge.expense {
-	background-color: var(--color-expense-light);
-	color: #dc2626;
+	background-color: rgba(var(--color-red-rgb), 0.15);
+	color: var(--color-red);
 }
 
 .calendar-legend {
@@ -518,16 +531,16 @@
 }
 
 .legend-color.income {
-	background-color: var(--color-income-light);
-	border: 1px solid var(--color-income);
+	background-color: rgba(var(--color-accent-rgb), 0.15);
+	border: 1px solid var(--text-accent);
 }
 
 .legend-color.expense {
-	background-color: var(--color-expense-light);
-	border: 1px solid var(--color-expense);
+	background-color: rgba(var(--color-red-rgb), 0.15);
+	border: 1px solid var(--color-red);
 }
 
-/* 차트 스타일 */
+/* 차트 스타일 - Obsidian 테마에 맞춤 */
 .chart-container {
 	display: flex;
 	flex-direction: column;
@@ -549,53 +562,21 @@
 .stat-card {
 	padding: 16px;
 	border-radius: 8px;
-}
-
-.stat-card.total {
-	background: linear-gradient(135deg, var(--color-expense-light), #fecaca);
-}
-
-.stat-card.average {
-	background: linear-gradient(135deg, #fed7aa, #fdba74);
-}
-
-.stat-card.max {
-	background: linear-gradient(135deg, #e9d5ff, #d8b4fe);
+	background-color: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
 }
 
 .stat-label {
 	font-size: 12px;
 	font-weight: 500;
-}
-
-.stat-card.total .stat-label {
-	color: #dc2626;
-}
-
-.stat-card.average .stat-label {
-	color: #ea580c;
-}
-
-.stat-card.max .stat-label {
-	color: #9333ea;
+	color: var(--text-muted);
 }
 
 .stat-value {
 	font-size: 20px;
 	font-weight: 700;
 	margin-top: 4px;
-}
-
-.stat-card.total .stat-value {
-	color: #b91c1c;
-}
-
-.stat-card.average .stat-value {
-	color: #c2410c;
-}
-
-.stat-card.max .stat-value {
-	color: #7e22ce;
+	color: var(--text-normal);
 }
 
 .chart-empty {
@@ -616,7 +597,7 @@
 	padding: 12px;
 	border: 1px solid var(--background-modifier-border);
 	border-radius: 8px;
-	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+	box-shadow: var(--shadow-s);
 }
 
 .tooltip-date {
@@ -634,12 +615,12 @@
 
 .tooltip-item .expense {
 	font-weight: 600;
-	color: var(--color-expense);
+	color: var(--color-red);
 }
 
 .tooltip-item .cumulative {
 	font-weight: 600;
-	color: var(--color-income);
+	color: var(--text-accent);
 }
 
 /* Recharts 오버라이드 */
