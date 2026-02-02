@@ -1,0 +1,10 @@
+{
+	"id": "expense-tracker",
+	"name": "가계부",
+	"version": "1.0.0",
+	"minAppVersion": "1.0.0",
+	"description": "Obsidian에서 수입과 지출을 관리하는 가계부 플러그인",
+	"author": "Your Name",
+	"authorUrl": "",
+	"isDesktopOnly": false
+}

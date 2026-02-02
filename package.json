@@ -1,0 +1,28 @@
+{
+	"name": "obsidian-expense-tracker",
+	"version": "1.0.0",
+	"description": "Obsidian 가계부 플러그인",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "node esbuild.config.mjs production"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^20.10.0",
+		"@types/react": "^18.2.0",
+		"@types/react-dom": "^18.2.0",
+		"builtin-modules": "^3.3.0",
+		"esbuild": "^0.20.0",
+		"obsidian": "latest",
+		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"lucide-react": "^0.487.0",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"recharts": "^2.15.2"
+	}
+}
