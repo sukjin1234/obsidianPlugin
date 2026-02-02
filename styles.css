@@ -616,6 +616,16 @@
 	gap: 16px;
 }
 
+.chart-filter {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 12px;
+	background-color: var(--background-primary);
+	border-radius: 6px;
+	border: 1px solid var(--background-modifier-border);
+}
+
 .chart-stats {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);

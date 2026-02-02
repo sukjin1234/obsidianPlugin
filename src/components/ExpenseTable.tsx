@@ -10,7 +10,18 @@ interface ExpenseTableProps {
 export function ExpenseTable({ transactions, onDelete }: ExpenseTableProps) {
 	const [filterType, setFilterType] = useState<'all' | 'expense' | 'income'>('all');
 	const [filterCategory, setFilterCategory] = useState('all');
+	const [filterMonth, setFilterMonth] = useState('all');
 	const [searchTerm, setSearchTerm] = useState('');
+
+	// 사용 가능한 월 목록 생성
+	const availableMonths = Array.from(
+		new Set(
+			transactions.map((t) => {
+				const date = new Date(t.date);
+				return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+			})
+		)
+	).sort().reverse();
 
 	// 필터링된 거래 내역
 	const filteredTransactions = transactions.filter((transaction) => {
@@ -19,8 +30,15 @@ export function ExpenseTable({ transactions, onDelete }: ExpenseTableProps) {
 		const searchMatch =
 			transaction.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			transaction.category.toLowerCase().includes(searchTerm.toLowerCase());
+		
+		// 월 필터
+		let monthMatch = true;
+		if (filterMonth !== 'all') {
+			const transactionMonth = transaction.date.substring(0, 7); // YYYY-MM
+			monthMatch = transactionMonth === filterMonth;
+		}
 
-		return typeMatch && categoryMatch && searchMatch;
+		return typeMatch && categoryMatch && searchMatch && monthMatch;
 	});
 
 	// 모든 카테고리 목록
@@ -33,12 +51,29 @@ export function ExpenseTable({ transactions, onDelete }: ExpenseTableProps) {
 		}).format(amount);
 	};
 
+	const formatMonth = (monthStr: string) => {
+		const [year, month] = monthStr.split('-');
+		return `${year}년 ${parseInt(month)}월`;
+	};
+
 	return (
 		<div className="expense-table-container">
 			{/* 필터 섹션 */}
 			<div className="filter-section">
 				<div className="filter-row">
 					<span className="filter-label">필터:</span>
+					<select
+						value={filterMonth}
+						onChange={(e) => setFilterMonth(e.target.value)}
+						className="filter-select"
+					>
+						<option value="all">전체 기간</option>
+						{availableMonths.map((month) => (
+							<option key={month} value={month}>
+								{formatMonth(month)}
+							</option>
+						))}
+					</select>
 					<select
 						value={filterType}
 						onChange={(e) => setFilterType(e.target.value as 'all' | 'expense' | 'income')}
