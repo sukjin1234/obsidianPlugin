@@ -23,9 +23,18 @@ export default class ExpenseTrackerPlugin extends Plugin {
 		// 커맨드 추가: 사이드바에서 열기
 		this.addCommand({
 			id: 'open-expense-sidebar',
-			name: '가계부 열기',
+			name: '가계부 사이드바에서 열기',
 			callback: () => {
 				this.activateSidebarView();
+			},
+		});
+
+		// 커맨드 추가: 새 탭에서 열기
+		this.addCommand({
+			id: 'open-expense-tab',
+			name: '가계부 새 탭에서 열기',
+			callback: () => {
+				this.activateTabView();
 			},
 		});
 	}
@@ -52,6 +61,17 @@ export default class ExpenseTrackerPlugin extends Plugin {
 		}
 
 		if (leaf) {
+			workspace.revealLeaf(leaf);
+		}
+	}
+
+	async activateTabView() {
+		const { workspace } = this.app;
+
+		// 새 탭에서 열기
+		const leaf = workspace.getLeaf('tab');
+		if (leaf) {
+			await leaf.setViewState({ type: VIEW_TYPE_EXPENSE, active: true });
 			workspace.revealLeaf(leaf);
 		}
 	}
