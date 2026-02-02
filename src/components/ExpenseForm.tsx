@@ -15,10 +15,30 @@ export function ExpenseForm({ onAdd }: ExpenseFormProps) {
 	const expenseCategories = ['식비', '교통', '쇼핑', '생활', '문화', '기타'];
 	const incomeCategories = ['용돈', '월급', '부수입'];
 
+	// 숫자에 콤마 추가
+	const formatNumberWithComma = (value: string): string => {
+		// 숫자만 추출
+		const numericValue = value.replace(/[^\d]/g, '');
+		if (!numericValue) return '';
+		// 콤마 추가
+		return Number(numericValue).toLocaleString('ko-KR');
+	};
+
+	// 콤마 제거하고 숫자로 변환
+	const parseNumber = (value: string): number => {
+		return Number(value.replace(/[^\d]/g, '')) || 0;
+	};
+
+	const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const formatted = formatNumberWithComma(e.target.value);
+		setAmount(formatted);
+	};
+
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
-		if (!category || !amount) {
+		const numericAmount = parseNumber(amount);
+		if (!category || numericAmount <= 0) {
 			return;
 		}
 
@@ -26,7 +46,7 @@ export function ExpenseForm({ onAdd }: ExpenseFormProps) {
 			date,
 			type,
 			category,
-			amount: parseFloat(amount),
+			amount: numericAmount,
 			description,
 		});
 
@@ -85,9 +105,10 @@ export function ExpenseForm({ onAdd }: ExpenseFormProps) {
 				<div className="form-group">
 					<label className="form-label">금액</label>
 					<input
-						type="number"
+						type="text"
+						inputMode="numeric"
 						value={amount}
-						onChange={(e) => setAmount(e.target.value)}
+						onChange={handleAmountChange}
 						placeholder="0"
 						className="form-input"
 					/>
