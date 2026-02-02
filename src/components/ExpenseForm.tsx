@@ -94,7 +94,7 @@ export function ExpenseForm({ onAdd }: ExpenseFormProps) {
 				</div>
 			</div>
 
-			<div className="form-row">
+			<div className="form-row form-row-last">
 				<div className="form-group">
 					<label className="form-label">설명</label>
 					<input
@@ -105,9 +105,8 @@ export function ExpenseForm({ onAdd }: ExpenseFormProps) {
 						className="form-input"
 					/>
 				</div>
-				<div className="form-group form-action-group">
-					<label className="form-label">&nbsp;</label>
-					<button type="submit" className="btn-primary">
+				<div className="form-group form-group-action">
+					<button type="submit" className="btn-primary btn-submit">
 						등록하기
 					</button>
 				</div>

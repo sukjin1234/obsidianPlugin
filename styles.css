@@ -7,6 +7,15 @@
 	--color-balance: var(--color-green);
 }
 
+/* Select 요소 글자 잘림 방지 */
+.expense-tracker-container select,
+.expense-tracker select {
+	text-indent: 0 !important;
+	padding-left: 12px !important;
+	text-align: left !important;
+	direction: ltr !important;
+}
+
 /* 메인 컨테이너 */
 .expense-tracker {
 	padding: 16px;
@@ -87,6 +96,10 @@
 	margin-bottom: 16px;
 }
 
+.expense-section.no-padding-top {
+	padding-top: 12px;
+}
+
 .section-title {
 	font-size: 16px;
 	font-weight: 600;
@@ -98,29 +111,33 @@
 .expense-tabs {
 	display: flex;
 	gap: 4px;
+	margin-top: 20px;
 	margin-bottom: 0;
-	padding-top: 8px;
+	margin-left: 16px;
 }
 
 .tab-button {
 	padding: 8px 16px;
-	background: none;
+	background-color: var(--background-modifier-hover);
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
 	font-size: 14px;
 	color: var(--text-muted);
-	transition: all 0.2s;
+	box-shadow: none;
+	outline: none;
 }
 
 .tab-button:hover {
-	background-color: var(--background-modifier-hover);
+	background-color: var(--background-modifier-border);
 	color: var(--text-normal);
 }
 
 .tab-button.active {
 	background-color: var(--interactive-accent);
 	color: var(--text-on-accent);
+	box-shadow: none;
+	outline: none;
 }
 
 /* 폼 스타일 */
@@ -136,19 +153,40 @@
 	gap: 12px;
 }
 
+@media (max-width: 400px) {
+	.form-row {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* 사이드바 좁을 때 대응 */
+.expense-tracker-container .form-row {
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.form-row-last {
+	align-items: end;
+}
+
 .form-group {
 	display: flex;
 	flex-direction: column;
 	gap: 4px;
+	min-width: 120px;
+	overflow: visible;
 }
 
-.form-action-group {
+.form-group-action {
 	display: flex;
-	flex-direction: column;
+	align-items: flex-end;
+	justify-content: center;
+	width: 100%;
 }
 
-.form-action-group .btn-primary {
-	height: 36px;
+.btn-submit {
+	min-width: 100px;
+	padding: 8px 24px;
+	margin: 0 auto;
 }
 
 .form-label {
@@ -157,8 +195,7 @@
 	color: var(--text-muted);
 }
 
-.form-input,
-.form-select {
+.form-input {
 	padding: 8px 12px;
 	border: 1px solid var(--background-modifier-border);
 	border-radius: 6px;
@@ -166,6 +203,38 @@
 	color: var(--text-normal);
 	font-size: 14px;
 	transition: border-color 0.2s;
+	width: 100%;
+	min-width: 0;
+	box-sizing: border-box;
+}
+
+.form-select {
+	padding: 10px 30px 10px 10px !important;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 6px;
+	background-color: var(--background-primary);
+	color: var(--text-normal);
+	font-size: 13px;
+	line-height: 1.2;
+	transition: border-color 0.2s;
+	width: 100%;
+	height: 38px;
+	box-sizing: border-box;
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 8px center;
+	text-indent: 0;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.form-select option {
+	padding: 8px 12px;
 }
 
 .form-input:focus,
