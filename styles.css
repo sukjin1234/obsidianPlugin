@@ -125,11 +125,91 @@
 	padding-top: 12px;
 }
 
+.section-header-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
 .section-title {
 	font-size: 16px;
 	font-weight: 600;
 	color: var(--text-normal);
-	margin: 0 0 16px 0;
+	margin: 0;
+}
+
+.btn-add-transaction {
+	padding: 8px 16px;
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+	border: none;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.btn-add-transaction:hover {
+	opacity: 0.9;
+}
+
+/* 거래 등록 모달 */
+.expense-modal-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.6);
+	padding: 16px;
+}
+
+.expense-modal {
+	background-color: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 12px;
+	width: 100%;
+	max-width: 440px;
+	max-height: 90vh;
+	overflow-y: auto;
+}
+
+.expense-modal-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 20px;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.expense-modal-title {
+	font-size: 18px;
+	font-weight: 600;
+	color: var(--text-normal);
+	margin: 0;
+}
+
+.expense-modal-close {
+	width: 32px;
+	height: 32px;
+	padding: 0;
+	font-size: 24px;
+	line-height: 1;
+	background: none;
+	border: none;
+	color: var(--text-muted);
+	cursor: pointer;
+	border-radius: 4px;
+}
+
+.expense-modal-close:hover {
+	background-color: var(--background-modifier-hover);
+	color: var(--text-normal);
+}
+
+.expense-modal-body {
+	padding: 20px;
 }
 
 /* 탭 네비게이션 */
@@ -170,6 +250,8 @@
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
+	max-width: 420px;
+	margin: 0 auto;
 }
 
 .form-row {
@@ -438,12 +520,12 @@
 }
 
 .badge.expense {
-	background-color: rgba(var(--color-red-rgb), 0.15);
+	background-color: rgba(237, 106, 119, 0.2);
 	color: var(--color-red);
 }
 
 .badge.income {
-	background-color: rgba(var(--color-accent-rgb), 0.15);
+	background-color: rgba(106, 149, 226, 0.2);
 	color: var(--text-accent);
 }
 
@@ -645,12 +727,12 @@
 }
 
 .transaction-badge.income {
-	background-color: rgba(var(--color-accent-rgb), 0.15);
+	background-color: rgba(106, 149, 226, 0.25);
 	color: var(--text-accent);
 }
 
 .transaction-badge.expense {
-	background-color: rgba(var(--color-red-rgb), 0.15);
+	background-color: rgba(237, 106, 119, 0.25);
 	color: var(--color-red);
 }
 
@@ -674,12 +756,12 @@
 }
 
 .legend-color.income {
-	background-color: rgba(var(--color-accent-rgb), 0.15);
+	background-color: rgba(106, 149, 226, 0.25);
 	border: 1px solid var(--text-accent);
 }
 
 .legend-color.expense {
-	background-color: rgba(var(--color-red-rgb), 0.15);
+	background-color: rgba(237, 106, 119, 0.25);
 	border: 1px solid var(--color-red);
 }
 

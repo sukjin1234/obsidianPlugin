@@ -20,6 +20,7 @@ export default function App({ dataManager }: AppProps) {
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [activeTab, setActiveTab] = useState<'table' | 'chart' | 'calendar'>('table');
 	const [filterMonth, setFilterMonth] = useState(getCurrentMonth());
+	const [showAddModal, setShowAddModal] = useState(false);
 
 	// DataManager에서 데이터 로드 및 동기화
 	const refreshData = useCallback(() => {
@@ -34,6 +35,7 @@ export default function App({ dataManager }: AppProps) {
 
 	const addTransaction = async (transaction: Omit<Transaction, 'id'>) => {
 		await dataManager.addTransaction(transaction);
+		setShowAddModal(false);
 	};
 
 	const deleteTransaction = async (id: string) => {
@@ -127,11 +129,32 @@ export default function App({ dataManager }: AppProps) {
 				</div>
 			</div>
 
-			{/* 지출/수입 등록 폼 */}
+			{/* 거래 등록 섹션 */}
 			<div className="expense-section">
-				<h2 className="section-title">새로운 거래 등록</h2>
-				<ExpenseForm onAdd={addTransaction} />
+				<div className="section-header-row">
+					<h2 className="section-title">새로운 거래 등록</h2>
+					<button type="button" className="btn-add-transaction" onClick={() => setShowAddModal(true)}>
+						추가하기
+					</button>
+				</div>
 			</div>
+
+			{/* 거래 등록 모달 */}
+			{showAddModal && (
+				<div className="expense-modal-overlay" onClick={() => setShowAddModal(false)}>
+					<div className="expense-modal" onClick={(e) => e.stopPropagation()}>
+						<div className="expense-modal-header">
+							<h3 className="expense-modal-title">새로운 거래 등록</h3>
+							<button type="button" className="expense-modal-close" onClick={() => setShowAddModal(false)}>
+								×
+							</button>
+						</div>
+						<div className="expense-modal-body">
+							<ExpenseForm onAdd={addTransaction} />
+						</div>
+					</div>
+				</div>
+			)}
 
 			{/* 탭 네비게이션 */}
 			<div className="expense-tabs">
