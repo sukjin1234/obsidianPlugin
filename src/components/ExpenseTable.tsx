@@ -6,28 +6,18 @@ interface ExpenseTableProps {
 	transactions: Transaction[];
 	onDelete: (id: string) => void;
 	onUpdate: (id: string, updates: Partial<Transaction>) => void;
+	filterMonth: string;
 }
 
-export function ExpenseTable({ transactions, onDelete, onUpdate }: ExpenseTableProps) {
+export function ExpenseTable({ transactions, onDelete, onUpdate, filterMonth }: ExpenseTableProps) {
 	const [filterType, setFilterType] = useState<'all' | 'expense' | 'income'>('all');
 	const [filterCategory, setFilterCategory] = useState('all');
-	const [filterMonth, setFilterMonth] = useState('all');
 	const [searchTerm, setSearchTerm] = useState('');
 	const [editingId, setEditingId] = useState<string | null>(null);
 	const [editForm, setEditForm] = useState<Partial<Transaction>>({});
 
 	const expenseCategories = ['식비', '교통', '쇼핑', '생활', '문화', '기타'];
 	const incomeCategories = ['용돈', '월급', '부수입'];
-
-	// 사용 가능한 월 목록 생성
-	const availableMonths = Array.from(
-		new Set(
-			transactions.map((t) => {
-				const date = new Date(t.date);
-				return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-			})
-		)
-	).sort().reverse();
 
 	// 필터링 및 날짜순 정렬
 	const filteredTransactions = transactions
@@ -101,24 +91,30 @@ export function ExpenseTable({ transactions, onDelete, onUpdate }: ExpenseTableP
 		return type === 'expense' ? expenseCategories : incomeCategories;
 	};
 
+	// 카테고리별 합계 계산 (필터링된 거래 기준)
+	const categoryTotals = filteredTransactions.reduce((acc, t) => {
+		if (!acc[t.category]) {
+			acc[t.category] = { amount: 0, type: t.type };
+		}
+		acc[t.category].amount += t.amount;
+		return acc;
+	}, {} as Record<string, { amount: number; type: 'expense' | 'income' }>);
+
+	// 지출/수입 별로 분리
+	const expenseTotals = Object.entries(categoryTotals)
+		.filter(([_, data]) => data.type === 'expense')
+		.sort((a, b) => b[1].amount - a[1].amount);
+
+	const incomeTotals = Object.entries(categoryTotals)
+		.filter(([_, data]) => data.type === 'income')
+		.sort((a, b) => b[1].amount - a[1].amount);
+
 	return (
 		<div className="expense-table-container">
 			{/* 필터 섹션 */}
 			<div className="filter-section">
 				<div className="filter-row">
 					<span className="filter-label">필터:</span>
-					<select
-						value={filterMonth}
-						onChange={(e) => setFilterMonth(e.target.value)}
-						className="filter-select"
-					>
-						<option value="all">전체 기간</option>
-						{availableMonths.map((month) => (
-							<option key={month} value={month}>
-								{formatMonth(month)}
-							</option>
-						))}
-					</select>
 					<select
 						value={filterType}
 						onChange={(e) => setFilterType(e.target.value as 'all' | 'expense' | 'income')}
@@ -268,6 +264,64 @@ export function ExpenseTable({ transactions, onDelete, onUpdate }: ExpenseTableP
 					</tbody>
 				</table>
 			</div>
+
+			{/* 카테고리별 합계 */}
+			{(expenseTotals.length > 0 || incomeTotals.length > 0) && (
+				<div className="category-summary">
+					<h3 className="category-summary-title">
+						카테고리별 합계
+						{filterMonth !== 'all' && <span className="filter-period">({formatMonth(filterMonth)})</span>}
+					</h3>
+					
+					<div className="category-summary-grid">
+						{/* 지출 카테고리 */}
+						{expenseTotals.length > 0 && (
+							<div className="category-group expense">
+								<h4 className="category-group-title">지출</h4>
+								<div className="category-list">
+									{expenseTotals.map(([category, data]) => (
+										<div key={category} className="category-item">
+											<span className="category-name">{category}</span>
+											<span className="category-amount expense">
+												-{formatCurrency(data.amount)}
+											</span>
+										</div>
+									))}
+									<div className="category-item total">
+										<span className="category-name">합계</span>
+										<span className="category-amount expense">
+											-{formatCurrency(expenseTotals.reduce((sum, [_, d]) => sum + d.amount, 0))}
+										</span>
+									</div>
+								</div>
+							</div>
+						)}
+
+						{/* 수입 카테고리 */}
+						{incomeTotals.length > 0 && (
+							<div className="category-group income">
+								<h4 className="category-group-title">수입</h4>
+								<div className="category-list">
+									{incomeTotals.map(([category, data]) => (
+										<div key={category} className="category-item">
+											<span className="category-name">{category}</span>
+											<span className="category-amount income">
+												+{formatCurrency(data.amount)}
+											</span>
+										</div>
+									))}
+									<div className="category-item total">
+										<span className="category-name">합계</span>
+										<span className="category-amount income">
+											+{formatCurrency(incomeTotals.reduce((sum, [_, d]) => sum + d.amount, 0))}
+										</span>
+									</div>
+								</div>
+							</div>
+						)}
+					</div>
+				</div>
+			)}
 		</div>
 	);
 }

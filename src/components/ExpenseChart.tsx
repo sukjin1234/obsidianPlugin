@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Transaction } from '../types';
 import {
 	LineChart,
@@ -13,28 +12,12 @@ import {
 
 interface ExpenseChartProps {
 	transactions: Transaction[];
+	filterMonth?: string;
 }
 
-export function ExpenseChart({ transactions }: ExpenseChartProps) {
-	const [filterMonth, setFilterMonth] = useState('all');
-
-	// 사용 가능한 월 목록 생성
-	const availableMonths = Array.from(
-		new Set(
-			transactions.map((t) => {
-				const date = new Date(t.date);
-				return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-			})
-		)
-	).sort().reverse();
-
-	// 월 필터 적용
-	const filteredTransactions = filterMonth === 'all'
-		? transactions
-		: transactions.filter((t) => t.date.substring(0, 7) === filterMonth);
-
-	// 날짜별 지출 데이터 생성
-	const expenseByDate = filteredTransactions
+export function ExpenseChart({ transactions, filterMonth }: ExpenseChartProps) {
+	// 날짜별 지출 데이터 생성 (이미 필터링된 transactions가 전달됨)
+	const expenseByDate = transactions
 		.filter((t) => t.type === 'expense')
 		.reduce(
 			(acc, transaction) => {
@@ -102,23 +85,6 @@ export function ExpenseChart({ transactions }: ExpenseChartProps) {
 
 	return (
 		<div className="chart-container">
-			{/* 월 필터 */}
-			<div className="chart-filter">
-				<span className="filter-label">기간:</span>
-				<select
-					value={filterMonth}
-					onChange={(e) => setFilterMonth(e.target.value)}
-					className="filter-select"
-				>
-					<option value="all">전체 기간</option>
-					{availableMonths.map((month) => (
-						<option key={month} value={month}>
-							{formatMonth(month)}
-						</option>
-					))}
-				</select>
-			</div>
-
 			{/* 통계 카드 */}
 			<div className="chart-stats">
 				<div className="stat-card total">

@@ -43,6 +43,31 @@
 	margin: 0;
 }
 
+/* 월 필터 */
+.month-filter {
+	margin-bottom: 16px;
+}
+
+.month-select {
+	padding: 12px 16px;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 1.4;
+	background-color: var(--background-secondary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+	color: var(--text-normal);
+	cursor: pointer;
+	min-width: 150px;
+	min-height: 44px;
+	box-sizing: border-box;
+}
+
+.month-select:focus {
+	outline: none;
+	border-color: var(--interactive-accent);
+}
+
 /* 요약 카드 - Obsidian 테마에 맞춤 */
 .expense-summary {
 	display: grid;
@@ -758,4 +783,100 @@
 
 .recharts-cartesian-axis-tick-value {
 	fill: var(--text-muted) !important;
+}
+
+/* 카테고리별 합계 */
+.category-summary {
+	margin-top: 20px;
+	padding: 16px;
+	background-color: var(--background-primary);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 8px;
+}
+
+.category-summary-title {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-normal);
+	margin: 0 0 16px 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.filter-period {
+	font-size: 12px;
+	font-weight: 400;
+	color: var(--text-muted);
+}
+
+.category-summary-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 16px;
+}
+
+.category-group {
+	padding: 12px;
+	background-color: var(--background-secondary);
+	border-radius: 6px;
+}
+
+.category-group-title {
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	margin: 0 0 10px 0;
+}
+
+.category-group.expense .category-group-title {
+	color: var(--color-red);
+}
+
+.category-group.income .category-group-title {
+	color: var(--text-accent);
+}
+
+.category-list {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.category-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 6px 0;
+	border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.category-item:last-child {
+	border-bottom: none;
+}
+
+.category-item.total {
+	border-top: 2px solid var(--background-modifier-border);
+	padding-top: 10px;
+	margin-top: 4px;
+	font-weight: 600;
+}
+
+.category-name {
+	font-size: 13px;
+	color: var(--text-normal);
+}
+
+.category-amount {
+	font-size: 13px;
+	font-weight: 500;
+}
+
+.category-amount.expense {
+	color: var(--color-red);
+}
+
+.category-amount.income {
+	color: var(--text-accent);
 }

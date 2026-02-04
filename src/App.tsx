@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { ExpenseForm } from './components/ExpenseForm';
 import { ExpenseChart } from './components/ExpenseChart';
 import { ExpenseTable } from './components/ExpenseTable';
@@ -10,9 +10,16 @@ interface AppProps {
 	dataManager: DataManager;
 }
 
+// 현재 월을 YYYY-MM 형식으로 반환
+const getCurrentMonth = () => {
+	const now = new Date();
+	return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+};
+
 export default function App({ dataManager }: AppProps) {
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [activeTab, setActiveTab] = useState<'table' | 'chart' | 'calendar'>('table');
+	const [filterMonth, setFilterMonth] = useState(getCurrentMonth());
 
 	// DataManager에서 데이터 로드 및 동기화
 	const refreshData = useCallback(() => {
@@ -37,12 +44,30 @@ export default function App({ dataManager }: AppProps) {
 		await dataManager.updateTransaction(id, updates);
 	};
 
-	// 총계 계산
-	const totalIncome = transactions
+	// 사용 가능한 월 목록 생성
+	const availableMonths = useMemo(() => {
+		return Array.from(
+			new Set(
+				transactions.map((t) => {
+					const date = new Date(t.date);
+					return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+				})
+			)
+		).sort().reverse();
+	}, [transactions]);
+
+	// 필터링된 거래 내역
+	const filteredTransactions = useMemo(() => {
+		if (filterMonth === 'all') return transactions;
+		return transactions.filter((t) => t.date.substring(0, 7) === filterMonth);
+	}, [transactions, filterMonth]);
+
+	// 총계 계산 (필터 적용)
+	const totalIncome = filteredTransactions
 		.filter(t => t.type === 'income')
 		.reduce((sum, t) => sum + t.amount, 0);
 
-	const totalExpense = transactions
+	const totalExpense = filteredTransactions
 		.filter(t => t.type === 'expense')
 		.reduce((sum, t) => sum + t.amount, 0);
 
@@ -53,6 +78,11 @@ export default function App({ dataManager }: AppProps) {
 		}).format(amount);
 	};
 
+	const formatMonth = (monthStr: string) => {
+		const [year, month] = monthStr.split('-');
+		return `${year}년 ${parseInt(month)}월`;
+	};
+
 	return (
 		<div className="expense-tracker">
 			{/* 헤더 */}
@@ -61,14 +91,34 @@ export default function App({ dataManager }: AppProps) {
 				<p className="expense-subtitle">당신의 재정을 한눈에 관리하세요</p>
 			</div>
 
+			{/* 월 필터 */}
+			<div className="month-filter">
+				<select
+					value={filterMonth}
+					onChange={(e) => setFilterMonth(e.target.value)}
+					className="month-select"
+				>
+					<option value="all">전체 기간</option>
+					{availableMonths.map((month) => (
+						<option key={month} value={month}>
+							{formatMonth(month)}
+						</option>
+					))}
+				</select>
+			</div>
+
 			{/* 요약 카드 */}
 			<div className="expense-summary">
 				<div className="summary-card income">
-					<div className="summary-label">총 수입</div>
+					<div className="summary-label">
+						{filterMonth === 'all' ? '총 수입' : `${formatMonth(filterMonth)} 수입`}
+					</div>
 					<div className="summary-value">{formatCurrency(totalIncome)}</div>
 				</div>
 				<div className="summary-card expense">
-					<div className="summary-label">총 지출</div>
+					<div className="summary-label">
+						{filterMonth === 'all' ? '총 지출' : `${formatMonth(filterMonth)} 지출`}
+					</div>
 					<div className="summary-value">{formatCurrency(totalExpense)}</div>
 				</div>
 				<div className="summary-card balance">
@@ -112,10 +162,11 @@ export default function App({ dataManager }: AppProps) {
 						transactions={transactions}
 						onDelete={deleteTransaction}
 						onUpdate={updateTransaction}
+						filterMonth={filterMonth}
 					/>
 				)}
 				{activeTab === 'chart' && (
-					<ExpenseChart transactions={transactions} />
+					<ExpenseChart transactions={filteredTransactions} filterMonth={filterMonth} />
 				)}
 				{activeTab === 'calendar' && (
 					<ExpenseCalendar transactions={transactions} />
