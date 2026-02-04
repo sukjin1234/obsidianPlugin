@@ -361,6 +361,15 @@
 
 .table-wrapper {
 	overflow-x: auto;
+	overflow-y: auto;
+	max-height: 280px;
+}
+
+.table-wrapper .expense-table thead {
+	position: sticky;
+	top: 0;
+	background-color: var(--background-secondary);
+	z-index: 1;
 }
 
 .expense-table {
