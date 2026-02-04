@@ -23,7 +23,7 @@ Obsidian에서 수입과 지출을 간편하게 관리할 수 있는 가계부 �
 
 ### 방법 1: 수동 설치 (권장)
 
-1. [Releases](https://github.com/sukjin1234/obsidianPlugin/releases/tag/v1.0) 페이지에서 최신 버전 다운로드
+1. [Releases](https://github.com/sukjin1234/obsidianPlugin/releases/) 페이지에서 최신 버전 다운로드
 2. `main.js`, `manifest.json`, `styles.css` 파일을 다운로드
 3. Obsidian Vault 폴더로 이동
 4. `.obsidian/plugins/` 폴더 내에 `expense-tracker` 폴더 생성
